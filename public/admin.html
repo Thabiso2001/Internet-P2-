@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUT ICT | Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #F5F5F5 0%, #E8ECEF 100%); min-height: 100vh; }
+        .admin-container { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0F5C6E 0%, #0A4A58 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .sidebar-header { padding: 25px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+        .sidebar-header img { height: 60px; margin-bottom: 10px; }
+        .sidebar-header h3 { color: #D4A017; font-size: 1.1rem; margin-top: 10px; }
+        .sidebar-header p { font-size: 0.7rem; opacity: 0.7; }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            margin: 5px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.8);
+        }
+        .nav-item i { width: 24px; font-size: 1.2rem; }
+        .nav-item:hover { background: rgba(212,160,23,0.2); color: #D4A017; transform: translateX(5px); }
+        .nav-item.active { background: linear-gradient(135deg, #D4A017, #B8860B); color: #0F5C6E; font-weight: 600; box-shadow: 0 4px 15px rgba(212,160,23,0.3); }
+        .main-content { flex: 1; margin-left: 280px; padding: 20px 30px; }
+        .top-bar-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .page-title h1 { font-size: 1.5rem; color: #0F5C6E; font-weight: 700; }
+        .page-title p { color: #666; font-size: 0.8rem; }
+        .admin-actions { display: flex; gap: 15px; align-items: center; }
+        .admin-profile { display: flex; align-items: center; gap: 12px; background: #F5F5F5; padding: 8px 20px; border-radius: 40px; }
+        .admin-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #D4A017, #B8860B); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #0F5C6E; }
+        .logout-btn { background: none; border: none; color: #8B2C2C; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.3s; }
+        .logout-btn:hover { background: #8B2C2C; color: white; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border-left: 4px solid #D4A017;
+        }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .stat-info h3 { font-size: 1.8rem; font-weight: 800; color: #0F5C6E; }
+        .stat-info p { color: #666; font-size: 0.8rem; margin-top: 5px; }
+        .stat-icon { font-size: 2.5rem; color: #D4A017; opacity: 0.7; }
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .card-header h2 { color: #0F5C6E; font-size: 1.3rem; font-weight: 600; }
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #F5F5F5;
+            padding: 5px 15px;
+            border-radius: 40px;
+        }
+        .search-bar i { color: #999; }
+        .search-bar input { border: none; background: none; padding: 10px; width: 250px; outline: none; }
+        .export-btn {
+            background: linear-gradient(135deg, #0F5C6E, #0A4A58);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .export-btn:hover { background: linear-gradient(135deg, #D4A017, #B8860B); color: #0F5C6E; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; background: #F8F9FA; color: #0F5C6E; font-weight: 600; border-bottom: 2px solid #D4A017; }
+        td { padding: 12px 15px; border-bottom: 1px solid #E0E0E0; color: #444; }
+        tr:hover { background: #F8F9FA; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .badge-pending { background: #D4A01720; color: #D4A017; }
+        .badge-approved { background: #4CAF5020; color: #4CAF50; }
+        .badge-rejected { background: #8B2C2C20; color: #8B2C2C; }
+        .action-btn { background: none; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.3s; font-size: 0.8rem; }
+        .edit-btn { background: #2196F3; color: white; margin-right: 5px; }
+        .edit-btn:hover { background: #1976D2; }
+        .delete-btn { background: #f44336; color: white; }
+        .delete-btn:hover { background: #d32f2f; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-header { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #D4A017; }
+        .modal-header h3 { color: #0F5C6E; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: #333; }
+        .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+        .save-btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .cancel-btn { background: #999; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .overview-tab { display: block; }
+        .loading-spinner { text-align: center; padding: 40px; color: #D4A017; font-size: 1.2rem; }
+        .error-message { text-align: center; padding: 40px; color: #8B2C2C; font-size: 1.2rem; }
+        @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .sidebar { width: 80px; }
+            .sidebar-header h3, .sidebar-header p, .nav-item span { display: none; }
+            .nav-item i { font-size: 1.5rem; }
+            .main-content { margin-left: 80px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+        .refresh-btn {
+            background: #0F5C6E;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .refresh-btn:hover { background: #D4A017; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://www.mut.ac.za/wp-content/uploads/2021/04/MUT-Logo-150x150.png" alt="MUT Logo" style="height: 60px; margin-bottom: 10px; filter: brightness(0) invert(1);">
+                <h3>ICT Department</h3>
+                <p>Admin Dashboard</p>
+            </div>
+            <div class="nav-item active" data-tab="overview">
+                <i class="fas fa-chart-line"></i>
+                <span>Overview</span>
+            </div>
+            <div class="nav-item" data-tab="applications">
+                <i class="fas fa-file-alt"></i>
+                <span>Applications</span>
+            </div>
+            <div class="nav-item" data-tab="enquiries">
+                <i class="fas fa-envelope"></i>
+                <span>Enquiries</span>
+            </div>
+            <div class="nav-item" data-tab="subscribers">
+                <i class="fas fa-users"></i>
+                <span>Subscribers</span>
+            </div>
+            <div class="nav-item" data-tab="feedback">
+                <i class="fas fa-star"></i>
+                <span>Feedback</span>
+            </div>
+            <div class="nav-item" data-tab="chats">
+                <i class="fas fa-comments"></i>
+                <span>Chat History</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar-admin">
+                <div class="page-title">
+                    <h1>Admin Dashboard</h1>
+                    <p>Manage your ICT department data</p>
+                </div>
+                <div class="admin-actions">
+                    <button class="refresh-btn" onclick="loadData()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <div class="admin-profile">
+                        <div class="admin-avatar" id="adminAvatar">A</div>
+                        <span id="adminName">Admin</span>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview-tab" class="overview-tab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalApplications">0</h3>
+                            <p>Applications</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalEnquiries">0</h3>
+                            <p>Enquiries</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-envelope"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalSubscribers">0</h3>
+                            <p>Subscribers</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalFeedback">0</h3>
+                            <p>Feedback</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalChats">0</h3>
+                            <p>Chats</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-comments"></i></div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-clock"></i> Recent Applications</h2>
+                        <button class="export-btn" onclick="switchToTab('applications')">
+                            <i class="fas fa-arrow-right"></i> View All
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div id="recentApplicationsTable">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Applications Tab -->
+            <div id="applications-tab" class="tab-content">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-file-alt"></i> Programme Applications</h2>
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchApps" placeholder="Search by name, email or programme...">
+                        </div>
+                        <button class="export-btn" onclick="exportToCSV('applicationsTable', 'applications')">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div id="applicationsTable">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enquiries Tab -->
+            <div id="enquiries-tab" class="tab-content">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-envelope"></i> Contact Form Enquiries</h2>
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchEnquiries" placeholder="Search by name or email...">
+                        </div>
+                        <button class="export-btn" onclick="exportToCSV('enquiriesTable', 'enquiries')">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div id="enquiriesTable">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscribers Tab -->
+            <div id="subscribers-tab" class="tab-content">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-users"></i> Newsletter Subscribers</h2>
+                        <button class="export-btn" onclick="exportToCSV('subscribersTable', 'subscribers')">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div id="subscribersTable">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Tab -->
+            <div id="feedback-tab" class="tab-content">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-star"></i> User Feedback</h2>
+                        <button class="export-btn" onclick="exportToCSV('feedbackTable', 'feedback')">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div id="feedbackTable">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chats Tab -->
+            <div id="chats-tab" class="tab-content">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-comments"></i> Chatbot Conversations</h2>
+                        <button class="export-btn" onclick="exportToCSV('chatsTable', 'chats')">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div id="chatsTable">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Edit Application</h3>
+            </div>
+            <div class="form-group">
+                <label>Application Status</label>
+                <select id="editStatus">
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Admin Notes</label>
+                <textarea id="editNotes" rows="4" placeholder="Add notes about this application..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="save-btn" onclick="saveEdit()">💾 Save Changes</button>
+                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allData = {};
+        let currentEditId = null;
+
+        async function checkAdminAccess() {
+            try {
+                const response = await fetch('/api/current-user');
+                const data = await response.json();
+                console.log('Admin check:', data);
+                if (!data.loggedIn || data.user.role !== 'admin') {
+                    window.location.href = '/';
+                    return false;
+                }
+                document.getElementById('adminName').innerText = data.user.fullName || data.user.username;
+                document.getElementById('adminAvatar').innerText = (data.user.fullName || data.user.username).charAt(0).toUpperCase();
+                return true;
+            } catch (error) {
+                console.error('Admin check error:', error);
+                window.location.href = '/';
+                return false;
+            }
+        }
+
+        async function logout() {
+    try {
+        const response = await fetch('/api/logout', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        console.log('Logout response:', data);
+        if (data.success) {
+            window.location.href = '/';
+        } else {
+            alert('Logout failed: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+    }
+}
+
+        function switchToTab(tabName) {
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.querySelector(`.nav-item[data-tab="${tabName}"]`).classList.add('active');
+            showTab(tabName);
+        }
+
+        function showTab(tabId) {
+            document.getElementById('overview-tab').style.display = 'none';
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            
+            if (tabId === 'overview') {
+                document.getElementById('overview-tab').style.display = 'block';
+            } else {
+                const targetTab = document.getElementById(`${tabId}-tab`);
+                if (targetTab) targetTab.classList.add('active');
+            }
+        }
+
+        async function loadData() {
+            console.log('🔄 Loading admin data...');
+            try {
+                const response = await fetch('/api/admin/data');
+                const data = await response.json();
+                console.log('📊 Raw data from server:', data);
+                
+                if (data.success) {
+                    allData = data;
+                    
+                    // Get counts from the data
+                    const applications = data.applications || [];
+                    const enquiries = data.enquiries || [];
+                    const subscribers = data.subscribers || [];
+                    const feedback = data.feedback || [];
+                    const chats = data.chats || [];
+                    
+                    console.log(`📈 Applications count: ${applications.length}`);
+                    console.log(`📈 Enquiries count: ${enquiries.length}`);
+                    console.log(`📈 Subscribers count: ${subscribers.length}`);
+                    console.log(`📈 Feedback count: ${feedback.length}`);
+                    console.log(`📈 Chats count: ${chats.length}`);
+                    
+                    // Update stats
+                    document.getElementById('totalApplications').innerText = applications.length;
+                    document.getElementById('totalEnquiries').innerText = enquiries.length;
+                    document.getElementById('totalSubscribers').innerText = subscribers.length;
+                    document.getElementById('totalFeedback').innerText = feedback.length;
+                    document.getElementById('totalChats').innerText = chats.length;
+                    
+                    // Render tables
+                    renderApplicationsTable(applications);
+                    renderRecentApplicationsTable(applications);
+                    renderEnquiriesTable(enquiries);
+                    renderSubscribersTable(subscribers);
+                    renderFeedbackTable(feedback);
+                    renderChatsTable(chats);
+                } else {
+                    console.error('Data fetch unsuccessful:', data);
+                    showError('Failed to load data from server');
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Error connecting to server');
+            }
+        }
+
+        function showError(message) {
+            const containers = ['applicationsTable', 'enquiriesTable', 'subscribersTable', 'feedbackTable', 'chatsTable', 'recentApplicationsTable'];
+            containers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = `<div class="error-message">⚠️ ${message}</div>`;
+            });
+        }
+
+        function renderRecentApplicationsTable(applications) {
+            const container = document.getElementById('recentApplicationsTable');
+            const recentApps = applications.slice(0, 5);
+            
+            if (recentApps.length === 0) {
+                container.innerHTML = '<div class="loading-spinner">No applications yet. Users will appear here when they apply.</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Full Name</th><th>Programme</th><th>Status</th><th>Submitted</th></tr>
+                    </thead>
+                    <tbody>
+                        ${recentApps.map(a => `
+                            <tr>
+                                <td>${a.id}</td>
+                                <td><strong>${escapeHtml(a.full_name)} ${escapeHtml(a.surname || '')}</strong></td>
+                                <td>${escapeHtml(a.programme_name || '-')}</td>
+                                <td><span class="badge badge-${a.application_status || 'pending'}">${a.application_status || 'pending'}</span></td>
+                                <td>${new Date(a.submitted_at).toLocaleDateString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderApplicationsTable(applications) {
+            const container = document.getElementById('applicationsTable');
+            if (applications.length === 0) {
+                container.innerHTML = '<div class="loading-spinner">No applications yet. Users will appear here when they apply.</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Full Name</th><th>Email</th><th>Phone</th><th>Programme</th><th>Status</th><th>Submitted</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        ${applications.map(a => `
+                            <tr>
+                                <td>${a.id}</td>
+                                <td><strong>${escapeHtml(a.full_name)} ${escapeHtml(a.surname || '')}</strong></td>
+                                <td>${escapeHtml(a.email)}</td>
+                                <td>${a.phone || '-'}</td>
+                                <td>${escapeHtml(a.programme_name)}</td>
+                                <td><span class="badge badge-${a.application_status || 'pending'}">${a.application_status || 'pending'}</span></td>
+                                <td>${new Date(a.submitted_at).toLocaleDateString()}</td>
+                                <td>
+                                    <button class="action-btn edit-btn" onclick="openEditModal(${a.id}, '${a.application_status || 'pending'}', '${escapeHtml(a.admin_notes || '')}')"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="action-btn delete-btn" onclick="deleteApplication(${a.id})"><i class="fas fa-trash"></i> Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderEnquiriesTable(enquiries) {
+            const container = document.getElementById('enquiriesTable');
+            if (enquiries.length === 0) {
+                container.innerHTML = '<div class="loading-spinner">No enquiries yet. Contact form messages will appear here.</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Date</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        ${enquiries.map(e => `
+                            <tr>
+                                <td>${e.id}</td>
+                                <td><strong>${escapeHtml(e.name)}</strong></td>
+                                <td>${escapeHtml(e.email)}</td>
+                                <td>${escapeHtml(e.subject || 'General')}</td>
+                                <td>${escapeHtml(e.message?.substring(0, 80))}...</td>
+                                <td>${new Date(e.created_at).toLocaleDateString()}</td>
+                                <td><button class="action-btn delete-btn" onclick="deleteEnquiry(${e.id})"><i class="fas fa-trash"></i> Delete</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderSubscribersTable(subscribers) {
+            const container = document.getElementById('subscribersTable');
+            if (subscribers.length === 0) {
+                container.innerHTML = '<div class="loading-spinner">No subscribers yet. Newsletter signups will appear here.</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Email</th><th>Subscribed Date</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        ${subscribers.map(s => `
+                            <tr>
+                                <td>${s.id}</td>
+                                <td>${escapeHtml(s.email)}</td>
+                                <td>${new Date(s.subscribed_at).toLocaleDateString()}</td>
+                                <td><button class="action-btn delete-btn" onclick="deleteSubscriber(${s.id})"><i class="fas fa-trash"></i> Delete</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderFeedbackTable(feedback) {
+            const container = document.getElementById('feedbackTable');
+            if (feedback.length === 0) {
+                container.innerHTML = '<div class="loading-spinner">No feedback yet. User ratings will appear here.</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Role</th><th>Rating</th><th>Feedback</th><th>Date</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        ${feedback.map(f => `
+                            <tr>
+                                <td>${f.id}</td>
+                                <td>${f.user_role || 'visitor'}</td>
+                                <td>${'⭐'.repeat(f.rating)}</td>
+                                <td>${escapeHtml(f.feedback || '-')}</td>
+                                <td>${new Date(f.created_at).toLocaleDateString()}</td>
+                                <td><button class="action-btn delete-btn" onclick="deleteFeedback(${f.id})"><i class="fas fa-trash"></i> Delete</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderChatsTable(chats) {
+            const container = document.getElementById('chatsTable');
+            if (chats.length === 0) {
+                container.innerHTML = '<div class="loading-spinner">No chat conversations yet. User chatbot interactions will appear here.</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>User Message</th><th>Bot Reply</th><th>Date</th></tr>
+                    </thead>
+                    <tbody>
+                        ${chats.map(c => `
+                            <tr>
+                                <td>${c.id}</td>
+                                <td>${escapeHtml(c.user_message?.substring(0, 60))}...</td>
+                                <td>${escapeHtml(c.bot_reply?.substring(0, 60))}...</td>
+                                <td>${new Date(c.created_at).toLocaleDateString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function openEditModal(id, status, notes) {
+            currentEditId = id;
+            document.getElementById('editStatus').value = status;
+            document.getElementById('editNotes').value = notes;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        async function saveEdit() {
+            const id = currentEditId;
+            const status = document.getElementById('editStatus').value;
+            const notes = document.getElementById('editNotes').value;
+            
+            try {
+                const response = await fetch(`/api/application/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ application_status: status, admin_notes: notes })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('✅ Application updated!');
+                    closeModal();
+                    loadData();
+                } else {
+                    alert('❌ Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('❌ Error updating application');
+            }
+        }
+
+        async function deleteApplication(id) {
+            if (confirm('⚠️ Delete this application? This cannot be undone.')) {
+                await fetch(`/api/application/${id}`, { method: 'DELETE' });
+                loadData();
+            }
+        }
+
+        async function deleteEnquiry(id) {
+            if (confirm('⚠️ Delete this enquiry?')) {
+                await fetch(`/api/enquiry/${id}`, { method: 'DELETE' });
+                loadData();
+            }
+        }
+
+        async function deleteSubscriber(id) {
+            if (confirm('⚠️ Remove this subscriber?')) {
+                await fetch(`/api/subscriber/${id}`, { method: 'DELETE' });
+                loadData();
+            }
+        }
+
+        async function deleteFeedback(id) {
+            if (confirm('⚠️ Delete this feedback?')) {
+                await fetch(`/api/feedback/${id}`, { method: 'DELETE' });
+                loadData();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentEditId = null;
+        }
+
+        function exportToCSV(tableId, filename) {
+            const tableDiv = document.getElementById(tableId);
+            if (!tableDiv) return;
+            const table = tableDiv.querySelector('table');
+            if (!table) return;
+            
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+            for (let row of rows) {
+                const cells = row.querySelectorAll('th, td');
+                const rowData = Array.from(cells).map(cell => `"${cell.innerText.replace(/"/g, '""')}"`);
+                csv.push(rowData.join(','));
+            }
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Tab switching
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                const tabId = item.dataset.tab;
+                showTab(tabId);
+            });
+        });
+
+        // Search functionality
+        const searchApps = document.getElementById('searchApps');
+        if (searchApps) {
+            searchApps.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#applicationsTable tbody tr');
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+
+        const searchEnquiries = document.getElementById('searchEnquiries');
+        if (searchEnquiries) {
+            searchEnquiries.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#enquiriesTable tbody tr');
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) closeModal();
+        }
+
+        // Initialize
+        checkAdminAccess().then(() => {
+            loadData();
+            setInterval(loadData, 30000);
+            showTab('overview');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUT ICT | Staff Directory</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <h1>MANGOSUTHU UNIVERSITY OF TECHNOLOGY</h1>
+            <p>Department of Information & Communication Technology</p>
+        </div>
+        <div class="main-nav">
+            <!-- ========== MUT LOGO IN HEADER (FIXED) ========== -->
+            <div class="logo">
+                <img src="/images/mut-logo.png" alt="MUT Logo">
+                <div class="logo-text">
+                    <h2>ICT Department</h2>
+                    <p>Innovation Through Technology</p>
+                </div>
+            </div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/programmes">Programmes</a>
+                <a href="/staff" class="active">Staff</a>
+                <a href="/news-page">News</a>
+                <a href="/contact">Contact</a>
+            </nav>
+            <div class="role-selector">
+                <span>View as:</span>
+                <button id="visitorBtn" class="role-btn">Visitor</button>
+                <button id="studentBtn" class="role-btn">Student</button>
+                <button id="lecturerBtn" class="role-btn">Lecturer</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="about-hero">
+            <h1>Meet Our Team</h1>
+            <p>Dedicated educators and industry professionals committed to your success</p>
+            <div class="header-decoration"></div>
+        </div>
+
+        <!-- Search Staff -->
+        <div class="staff-search">
+            <input type="text" id="staffSearch" placeholder="🔍 Search staff by name, role, or department...">
+        </div>
+
+        <!-- Staff Grid -->
+        <div class="staff-grid" id="staffGrid">
+            <div class="loading-spinner">Loading staff directory...</div>
+        </div>
+
+        <!-- Department Heads Section -->
+        <div class="dept-info">
+            <div class="dept-card">
+                <h3>📊 Department Statistics</h3>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Full-time Lecturers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">800+</span>
+                        <span class="stat-label">Active Students</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">92%</span>
+                        <span class="stat-label">Employment Rate</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">State-of-art Labs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- ========== MUT LOGO IN FOOTER (FIXED) ========== -->
+            <div class="footer-section">
+                <img src="/images/mut-logo.png" alt="MUT Logo" style="height: 60px; margin-bottom: 1rem;">
+                <h4>MUT ICT Department</h4>
+                <p>Mangosuthu University of Technology<br>511 Mangosuthu Highway, Umlazi<br>Durban, 4031</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/programmes">Programmes</a></li>
+                    <li><a href="/staff">Staff</a></li>
+                    <li><a href="/news-page">News</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📞 031-907-7111<br>✉️ ict@mut.ac.za<br>🕒 Mon-Fri: 8am-4pm</p>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#">📘 Facebook</a>
+                    <a href="#">🐦 Twitter</a>
+                    <a href="#">📸 Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 MUT ICT Department — All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        let allStaff = [];
+        
+        async function loadStaff() {
+            try {
+                const res = await fetch('/api/staff');
+                allStaff = await res.json();
+                displayStaff(allStaff);
+            } catch (error) {
+                document.getElementById('staffGrid').innerHTML = '<div class="error">Failed to load staff directory. Please refresh.</div>';
+            }
+        }
+        
+        function displayStaff(staff) {
+            const container = document.getElementById('staffGrid');
+            if (staff.length === 0) {
+                container.innerHTML = '<div class="no-results">No staff members found matching your search.</div>';
+                return;
+            }
+            
+            container.innerHTML = staff.map(member => `
+                <div class="staff-card-modern">
+                    <div class="staff-avatar-modern">
+                        <div class="avatar-icon">👨‍🏫</div>
+                        <div class="staff-status available"></div>
+                    </div>
+                    <div class="staff-info-modern">
+                        <h3>${member.name}</h3>
+                        <p class="staff-role-modern">${member.role}</p>
+                        <div class="staff-contact">
+                            <p><span class="contact-icon">📧</span> ${member.email}</p>
+                            <p><span class="contact-icon">📍</span> ${member.office}</p>
+                            <p><span class="contact-icon">📞</span> ${member.phone || '031-907-7400'}</p>
+                        </div>
+                        <div class="staff-actions">
+                            <button class="email-staff" onclick="window.location.href='mailto:${member.email}'">Email →</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        const searchInput = document.getElementById('staffSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = allStaff.filter(member => 
+                    member.name.toLowerCase().includes(searchTerm) ||
+                    member.role.toLowerCase().includes(searchTerm) ||
+                    (member.email && member.email.toLowerCase().includes(searchTerm))
+                );
+                displayStaff(filtered);
+            });
+        }
+        
+        loadStaff();
+    </script>
+</body>
+</html>

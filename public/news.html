@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUT ICT | News & Events</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <h1>MANGOSUTHU UNIVERSITY OF TECHNOLOGY</h1>
+            <p>Department of Information & Communication Technology</p>
+        </div>
+        <div class="main-nav">
+            <!-- ========== MUT LOGO IN HEADER (FIXED) ========== -->
+            <div class="logo">
+                <img src="/images/mut-logo.png" alt="MUT Logo">
+                <div class="logo-text">
+                    <h2>ICT Department</h2>
+                    <p>Innovation Through Technology</p>
+                </div>
+            </div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/programmes">Programmes</a>
+                <a href="/staff">Staff</a>
+                <a href="/news-page" class="active">News</a>
+                <a href="/contact">Contact</a>
+            </nav>
+            <div class="role-selector">
+                <span>View as:</span>
+                <button id="visitorBtn" class="role-btn">Visitor</button>
+                <button id="studentBtn" class="role-btn">Student</button>
+                <button id="lecturerBtn" class="role-btn">Lecturer</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="about-hero">
+            <h1>Latest News & Events</h1>
+            <p>Stay updated with the latest developments in the ICT Department</p>
+            <div class="header-decoration"></div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="news-filters">
+            <button class="filter-btn active" data-filter="all">All News</button>
+            <button class="filter-btn" data-filter="events">Events</button>
+            <button class="filter-btn" data-filter="announcements">Announcements</button>
+            <button class="filter-btn" data-filter="achievements">Achievements</button>
+        </div>
+
+        <!-- News Grid -->
+        <div class="news-grid-modern" id="newsGrid">
+            <div class="loading-spinner">Loading latest news...</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- ========== MUT LOGO IN FOOTER (FIXED) ========== -->
+            <div class="footer-section">
+                <img src="/images/mut-logo.png" alt="MUT Logo" style="height: 60px; margin-bottom: 1rem;">
+                <h4>MUT ICT Department</h4>
+                <p>Mangosuthu University of Technology<br>511 Mangosuthu Highway, Umlazi<br>Durban, 4031</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/programmes">Programmes</a></li>
+                    <li><a href="/staff">Staff</a></li>
+                    <li><a href="/news-page">News</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📞 031-907-7111<br>✉️ ict@mut.ac.za<br>🕒 Mon-Fri: 8am-4pm</p>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#">📘 Facebook</a>
+                    <a href="#">🐦 Twitter</a>
+                    <a href="#">📸 Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 MUT ICT Department — All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        async function loadNews() {
+            try {
+                const res = await fetch('/api/news');
+                const articles = await res.json();
+                const container = document.getElementById('newsGrid');
+                container.innerHTML = articles.map((article, index) => `
+                    <div class="news-card-modern" data-category="${index % 3 === 0 ? 'events' : index % 3 === 1 ? 'announcements' : 'achievements'}">
+                        <div class="news-badge">${index % 3 === 0 ? '📅 Event' : index % 3 === 1 ? '📢 Announcement' : '🏆 Achievement'}</div>
+                        <h3>${article.title}</h3>
+                        <p class="news-date">${new Date(article.publishedAt).toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p class="news-description">${article.description}</p>
+                        <a href="${article.url}" target="_blank" class="read-more-btn">Read More →</a>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('newsGrid').innerHTML = '<div class="error">Unable to load news. Please try again later.</div>';
+            }
+        }
+        
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.news-card-modern').forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        loadNews();
+    </script>
+</body>
+</html>

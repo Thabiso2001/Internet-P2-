@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUT ICT | Contact Us</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <h1>MANGOSUTHU UNIVERSITY OF TECHNOLOGY</h1>
+            <p>Department of Information & Communication Technology</p>
+        </div>
+        <div class="main-nav">
+            <!-- ========== MUT LOGO IN HEADER (FIXED) ========== -->
+            <div class="logo">
+                <img src="/images/mut-logo.png" alt="MUT Logo">
+                <div class="logo-text">
+                    <h2>ICT Department</h2>
+                    <p>Innovation Through Technology</p>
+                </div>
+            </div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/programmes">Programmes</a>
+                <a href="/staff">Staff</a>
+                <a href="/news-page">News</a>
+                <a href="/contact" class="active">Contact</a>
+            </nav>
+            <div class="role-selector">
+                <span>View as:</span>
+                <button id="visitorBtn" class="role-btn">Visitor</button>
+                <button id="studentBtn" class="role-btn">Student</button>
+                <button id="lecturerBtn" class="role-btn">Lecturer</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="about-hero">
+            <h1>Contact Us</h1>
+            <p>We're here to help and answer any questions you may have</p>
+            <div class="header-decoration"></div>
+        </div>
+
+        <div class="contact-grid-modern">
+            <div class="contact-info-modern">
+                <div class="contact-card-modern">
+                    <div class="card-icon">📍</div>
+                    <h3>Visit Us</h3>
+                    <p>Mangosuthu University of Technology<br>511 Griffiths Mxenge Hwy<br>Umlazi, Durban, 4031</p>
+                    <p class="postal">P O Box 12363, Jacobs, 4026</p>
+                    <button class="get-directions" onclick="window.open('https://maps.google.com?q=Mangosuthu+University+of+Technology', '_blank')">Get Directions →</button>
+                </div>
+
+                <div class="contact-card-modern">
+                    <div class="card-icon">📞</div>
+                    <h3>Call Us</h3>
+                    <p><strong>Call Centre:</strong> 031 907 7111</p>
+                    <p><strong>ICT Department:</strong> 031 907 7456</p>
+                    <p><strong>Admissions:</strong> 031 907 7345</p>
+                </div>
+
+                <div class="contact-card-modern">
+                    <div class="card-icon">✉️</div>
+                    <h3>Email Us</h3>
+                    <p><strong>General:</strong> info@mut.ac.za</p>
+                    <p><strong>ICT Department:</strong> ict@mut.ac.za</p>
+                    <p><strong>Admissions:</strong> admissions@mut.ac.za</p>
+                </div>
+
+                <div class="contact-card-modern">
+                    <div class="card-icon">🕒</div>
+                    <h3>Office Hours</h3>
+                    <p><strong>Monday - Thursday:</strong> 8:00 - 16:00</p>
+                    <p><strong>Friday:</strong> 8:00 - 15:30</p>
+                    <p><strong>Saturday - Sunday:</strong> Closed</p>
+                </div>
+            </div>
+
+            <div class="contact-form-modern">
+                <h2>Send us a message</h2>
+                <p class="form-subtitle">Fill out the form below and we'll get back to you within 48 hours</p>
+                <form id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="contactName" placeholder="e.g., Thabo Mbeki" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="contactEmail" placeholder="youremail@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="contactPhone" placeholder="081 234 5678">
+                    </div>
+                    <div class="form-group">
+                        <label>Subject *</label>
+                        <select id="contactSubject" required>
+                            <option value="">Select a subject</option>
+                            <option>Admissions Enquiry</option>
+                            <option>Programme Information</option>
+                            <option>Technical Support</option>
+                            <option>General Query</option>
+                            <option>Compliment</option>
+                            <option>Complaint</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message *</label>
+                        <textarea id="contactMessage" rows="5" placeholder="Please provide details about your enquiry..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message →</button>
+                    <p id="formMessage" class="form-message"></p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- ========== MUT LOGO IN FOOTER (FIXED) ========== -->
+            <div class="footer-section">
+                <img src="/images/mut-logo.png" alt="MUT Logo" style="height: 60px; margin-bottom: 1rem;">
+                <h4>MUT ICT Department</h4>
+                <p>Mangosuthu University of Technology<br>511 Griffiths Mxenge Hwy, Umlazi<br>Durban, 4031</p>
+                <p class="address-note">P O Box 12363, Jacobs, 4026</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/programmes">Programmes</a></li>
+                    <li><a href="/staff">Staff</a></li>
+                    <li><a href="/news-page">News</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Bursaries & NSFAS</a></li>
+                    <li><a href="#">Apply to MUT</a></li>
+                    <li><a href="#">Ignite 2030 Strategy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📞 031 907 7111</p>
+                <p>✉️ info@mut.ac.za</p>
+                <button class="directions-btn" onclick="window.open('https://maps.google.com?q=Mangosuthu+University+of+Technology', '_blank')">Get Directions →</button>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 MUT ICT Department — Ignite 2030 Strategy</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                phone: document.getElementById('contactPhone').value,
+                subject: document.getElementById('contactSubject').value,
+                message: document.getElementById('contactMessage').value
+            };
+            
+            const msgDiv = document.getElementById('formMessage');
+            msgDiv.innerHTML = '⏳ Sending message...';
+            msgDiv.style.color = '#D4A017';
+            
+            try {
+                const res = await fetch('/api/enquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    msgDiv.innerHTML = '✅ ' + data.message;
+                    msgDiv.style.color = '#4CAF50';
+                    document.getElementById('contactForm').reset();
+                    setTimeout(() => { msgDiv.innerHTML = ''; }, 5000);
+                } else {
+                    msgDiv.innerHTML = '❌ ' + data.message;
+                    msgDiv.style.color = '#8B2C2C';
+                }
+            } catch (error) {
+                msgDiv.innerHTML = '❌ Error sending message. Please try again.';
+                msgDiv.style.color = '#8B2C2C';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUT ICT | Programmes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Grouped Form Layout Styles */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f6;
+        }
+        .form-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #D4A017;
+            color: #0F5C6E;
+            display: inline-block;
+        }
+        .form-card .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-card .form-group {
+            margin-bottom: 16px;
+        }
+        .form-card .form-group.full-width {
+            grid-column: span 2;
+        }
+        .form-card label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #1e2a3a;
+            font-size: 0.85rem;
+        }
+        .form-card input, .form-card select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .form-card input:focus, .form-card select:focus {
+            border-color: #D4A017;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(212,160,23,0.2);
+        }
+        .validation-error {
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: normal;
+        }
+        .file-upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .file-upload-area:hover {
+            border-color: #D4A017;
+            background: #fff9f0;
+        }
+        .declaration-box {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            border-left: 3px solid #D4A017;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .submit-final-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0F5C6E, #0a4a58);
+            color: white;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .submit-final-btn:hover {
+            background: linear-gradient(135deg, #D4A017, #b8860b);
+            color: #0F5C6E;
+        }
+        .hint {
+            font-size: 0.7rem;
+            color: #6c757d;
+            display: block;
+            margin-top: 4px;
+        }
+        @media (max-width: 640px) {
+            .form-card .form-row {
+                grid-template-columns: 1fr;
+            }
+            .form-card .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-bar"><h1>MANGOSUTHU UNIVERSITY OF TECHNOLOGY</h1><p>Department of Information & Communication Technology</p></div>
+        <div class="main-nav">
+            <div class="logo"><img src="/images/mut-logo.png" alt="MUT Logo"><div class="logo-text"><h2>ICT Department</h2><p>Innovation Through Technology</p></div></div>
+            <nav><a href="/">Home</a><a href="/about">About</a><a href="/programmes" class="active">Programmes</a><a href="/staff">Staff</a><a href="/news-page">News</a><a href="/contact">Contact</a></nav>
+            <div class="role-selector"><span>View as:</span><button id="visitorBtn" class="role-btn">Visitor</button><button id="studentBtn" class="role-btn">Student</button><button id="lecturerBtn" class="role-btn">Lecturer</button></div>
+            <div class="auth-buttons">
+                <div id="authButtons"><button id="showLoginBtn" class="auth-btn">🔐 Login</button><button id="showSignupBtn" class="auth-btn">📝 Sign Up</button></div>
+                <div id="userMenu" style="display: none;"><button id="userMenuBtn" class="user-menu-btn">👤 <span id="userNameShort"></span> ▼</button><div class="dropdown-menu"><a href="#" id="logoutBtn">🚪 Logout</a></div></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="about-hero"><h1>Our Programmes</h1><p>Choose your path in Information & Communication Technology</p><div class="header-decoration"></div></div>
+        
+        <!-- Programme Tabs -->
+        <div class="programme-tabs">
+            <button class="tab-btn active" data-tab="diploma">Diploma in IT</button>
+            <button class="tab-btn" data-tab="ecp">Extended Programme</button>
+            <button class="tab-btn" data-tab="advanced">Advanced Diploma</button>
+            <button class="tab-btn" data-tab="short">Short Courses</button>
+        </div>
+        
+        <!-- Diploma in IT -->
+        <div class="programme-tab-content active" id="diploma">
+            <div class="programme-detail-card">
+                <div class="programme-header"><div class="programme-icon-large">🎓</div><div class="programme-title-section"><h2>Diploma in Information Technology</h2><div class="programme-meta-badge"><span>NQF Level: 6</span><span>3 Years</span><span>360 Credits</span></div></div></div>
+                <div class="programme-body">
+                    <div class="info-section"><h3>🎯 Specializations</h3><div class="streams-grid"><div class="stream-card"><h4>💻 Software Development</h4><p>Design and build software applications</p></div><div class="stream-card"><h4>🌐 Communication Networks</h4><p>Design and manage network infrastructure</p></div></div></div>
+                    <div class="info-section"><h3>📋 Requirements</h3><div class="requirement-box"><ul><li>Matric (Diploma or higher)</li><li>English Level 3 or higher</li><li>Mathematics Level 3 OR Maths Literacy Level 5</li><li>Minimum 24 points</li></ul><p class="warning-note">⚠️ Meeting requirements does not guarantee admission</p></div></div>
+                    <button class="apply-now-btn" data-programme="Diploma in Information Technology">Apply Now →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ECP Programme -->
+        <div class="programme-tab-content" id="ecp">
+            <div class="programme-detail-card">
+                <div class="programme-header"><div class="programme-icon-large">📚</div><div class="programme-title-section"><h2>Extended Curriculum Programme (ECP)</h2><div class="programme-meta-badge"><span>NQF Level: 6</span><span>4 Years</span><span>480 Credits</span></div></div></div>
+                <div class="programme-body">
+                    <div class="info-section"><h3>📋 Requirements</h3><div class="requirement-box"><ul><li>English Level 3</li><li>Mathematics Level 2 OR Maths Literacy Level 3</li><li>Minimum 23 points</li></ul></div></div>
+                    <button class="apply-now-btn" data-programme="Diploma in Information Technology (ECP)">Apply Now →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Advanced Diploma -->
+        <div class="programme-tab-content" id="advanced">
+            <div class="programme-detail-card">
+                <div class="programme-header"><div class="programme-icon-large">⚡</div><div class="programme-title-section"><h2>Advanced Diploma in ICT</h2><h3>Applications Development</h3><div class="programme-meta-badge"><span>NQF Level: 7</span><span>1 Year Full-time / 2 Years Part-time</span><span>120 Credits</span></div></div></div>
+                <div class="programme-body">
+                    <div class="info-section"><h3>📋 Requirements</h3><div class="requirement-box"><ul><li>Diploma in ICT at NQF Level 6</li><li>OR Bachelor's Degree in related field</li><li>OR RPL (Recognition of Prior Learning)</li></ul></div></div>
+                    <button class="apply-now-btn" data-programme="Advanced Diploma in ICT Applications Development">Apply Now →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Short Courses -->
+        <div class="programme-tab-content" id="short">
+            <div class="short-courses-grid">
+                <div class="short-course-card"><div class="course-icon">🔐</div><h3>Cybersecurity</h3><p>Ethical hacking, security operations</p><div class="course-meta"><span>⏱️ 3 Months</span></div><button class="apply-now-btn small" data-programme="Short Course: Cybersecurity">Enquire →</button></div>
+                <div class="short-course-card"><div class="course-icon">☁️</div><h3>Cloud Computing</h3><p>AWS, Azure, cloud architecture</p><div class="course-meta"><span>⏱️ 3 Months</span></div><button class="apply-now-btn small" data-programme="Short Course: Cloud Computing">Enquire →</button></div>
+                <div class="short-course-card"><div class="course-icon">📊</div><h3>Data Science</h3><p>Python, machine learning</p><div class="course-meta"><span>⏱️ 3 Months</span></div><button class="apply-now-btn small" data-programme="Short Course: Data Science">Enquire →</button></div>
+            </div>
+        </div>
+    </main>
+
+    <footer><div class="footer-content"><div class="footer-section"><img src="/images/mut-logo.png" alt="MUT Logo" style="height: 60px; margin-bottom: 1rem;"><h4>MUT ICT Department</h4><p>511 Griffiths Mxenge Hwy, Umlazi<br>Durban, 4031</p><p class="address-note">P O Box 12363, Jacobs, 4026</p></div><div class="footer-section"><h4>Quick Links</h4><ul><li><a href="/">Home</a></li><li><a href="/programmes">Programmes</a></li><li><a href="/staff">Staff</a></li><li><a href="/contact">Contact</a></li></ul></div><div class="footer-section"><h4>Contact</h4><p>📞 031 907 7111</p><p>✉️ info@mut.ac.za</p></div></div><div class="footer-bottom"><p class="copyright">© 2025 MUT ICT Department</p></div></footer>
+
+    <!-- Application Modal - GROUPED SECTIONS LAYOUT (Same as Homepage) -->
+    <div id="applyModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header"><div class="modal-icon">📝</div><h3>MUT Online Application Form 2027</h3><p class="modal-subtitle">Please complete all required fields (*)</p></div>
+            
+            <div class="form-container">
+                <form id="applicationForm">
+                    <!-- SECTION 1: PERSONAL INFORMATION -->
+                    <div class="form-card">
+                        <h3>👤 Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Title *</label>
+                                <select id="title" required>
+                                    <option value="">Select</option>
+                                    <option>Mr</option>
+                                    <option>Ms</option>
+                                    <option>Mrs</option>
+                                    <option>Dr</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Full Name(s) *</label>
+                                <input type="text" id="fullName" placeholder="e.g., Thabo John" required>
+                                <small class="hint">Letters only, no numbers</small>
+                                <div class="validation-error" id="fullNameError"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Surname *</label>
+                                <input type="text" id="surname" placeholder="e.g., Mbeki" required>
+                                <small class="hint">Letters only, no numbers</small>
+                                <div class="validation-error" id="surnameError"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth *</label>
+                                <input type="date" id="dob" required>
+                                <small class="hint">You must be 16+ years old</small>
+                                <div class="validation-error" id="dobError"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: ACADEMIC INFORMATION -->
+                    <div class="form-card">
+                        <h3>📚 Academic Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>ID / Passport Number *</label>
+                                <input type="text" id="idNumber" placeholder="13 digits" required maxlength="13">
+                                <small class="hint">13 digits (South African ID)</small>
+                                <div class="validation-error" id="idError"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender *</label>
+                                <select id="gender" required>
+                                    <option value="">Select</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Highest Qualification *</label>
+                                <select id="qualification" required>
+                                    <option value="">Select</option>
+                                    <option>National Senior Certificate (NSC)</option>
+                                    <option>Senior Certificate (SC)</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>School Name *</label>
+                                <input type="text" id="school" placeholder="Name of your school" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>English Level</label>
+                                <select id="englishGrade">
+                                    <option value="">Select</option>
+                                    <option>Level 7 (80-100%)</option>
+                                    <option>Level 6 (70-79%)</option>
+                                    <option>Level 5 (60-69%)</option>
+                                    <option>Level 4 (50-59%)</option>
+                                    <option>Level 3 (40-49%)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Mathematics Level</label>
+                                <select id="mathsGrade">
+                                    <option value="">Select</option>
+                                    <option>Level 7 (80-100%)</option>
+                                    <option>Level 6 (70-79%)</option>
+                                    <option>Level 5 (60-69%)</option>
+                                    <option>Level 4 (50-59%)</option>
+                                    <option>Level 3 (40-49%)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>📎 Upload Matric Certificate</label>
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <div class="upload-icon">📄</div>
+                                <p>Drag & drop your file here or click to browse</p>
+                                <small>Accepted formats: JPG, PNG, PDF (Max 5MB)</small>
+                                <input type="file" id="documentUpload" accept=".jpg,.jpeg,.png,.pdf" style="display:none;">
+                                <button type="button" id="uploadBtn" class="upload-btn">Choose File</button>
+                            </div>
+                            <div id="uploadStatus"></div>
+                            <div id="filePreview"></div>
+                            <input type="hidden" id="uploadedFileUrl">
+                        </div>
+                    </div>
+
+                    <!-- Add this inside the Academic Information card, after the Matric Certificate upload -->
+<div class="form-group full-width">
+    <label>📎 Upload Certified ID Copy</label>
+    <div class="file-upload-area" id="idUploadArea">
+        <div class="upload-icon">🪪</div>
+        <p>Drag & drop your certified ID copy here or click to browse</p>
+        <small>Accepted formats: JPG, PNG, PDF (Max 5MB) | Certified copy of ID required</small>
+        <input type="file" id="idDocumentUpload" accept=".jpg,.jpeg,.png,.pdf" style="display:none;">
+        <button type="button" id="idUploadBtn" class="upload-btn">Choose File</button>
+    </div>
+    <div id="idUploadStatus" class="upload-status"></div>
+    <div id="idFilePreview" class="file-preview"></div>
+    <input type="hidden" id="uploadedIdFileUrl" name="uploadedIdFileUrl">
+</div>
+
+                    <!-- SECTION 3: CONTACT INFORMATION -->
+                    <div class="form-card">
+                        <h3>📞 Contact Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email Address *</label>
+                                <input type="email" id="appEmail" placeholder="youremail@example.com" required>
+                                <small class="hint">Valid email address format</small>
+                                <div class="validation-error" id="emailError"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cell Phone Number *</label>
+                                <input type="tel" id="phone" placeholder="0821234567" required maxlength="10">
+                                <small class="hint">10 digits, numbers only (e.g., 0821234567)</small>
+                                <div class="validation-error" id="phoneError"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: PROGRAMME SELECTION -->
+                    <div class="form-card">
+                        <h3>🎓 Programme Selection</h3>
+                        <div class="form-group full-width">
+                            <label>Choose your programme *</label>
+                            <select id="programmeSelect" required>
+                                <option value="">-- Select a programme --</option>
+                                <option>Diploma in Information Technology</option>
+                                <option>Diploma in Information Technology (ECP)</option>
+                                <option>Diploma in Networking</option>
+                                <option>Advanced Diploma in Applications Development</option>
+                                <option>Higher Certificate in IT Support Services</option>
+                                <option>Short Course: Cybersecurity</option>
+                                <option>Short Course: Cloud Computing</option>
+                                <option>Short Course: Data Science</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mode of Study *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="studyMode" value="Full-time" checked> Full-time</label>
+                                    <label><input type="radio" name="studyMode" value="Part-time"> Part-time</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Intake *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="intake" value="January 2025" checked> January 2025</label>
+                                    <label><input type="radio" name="intake" value="July 2025"> July 2025</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 5: DECLARATION -->
+                    <div class="form-card">
+                        <h3>📜 Declaration</h3>
+                        <div class="declaration-box">
+                            <p><strong>Declaration by Applicant:</strong></p>
+                            <p>I hereby declare that the information provided in this application is true, complete, and correct to the best of my knowledge. I understand that if any information is found to be false, my application may be rejected or my admission may be withdrawn.</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="declarationCheckbox" required> I confirm that all information provided is accurate and complete *
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="termsCheckbox" required> I agree to the terms and conditions of MUT *
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" id="submitApplicationBtn" class="submit-final-btn">✓ Submit Application</button>
+                    </div>
+                    <div id="appMessage" class="form-message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content modal-auth">
+            <span class="close-modal close-login">&times;</span>
+            <div class="auth-header"><div class="auth-icon">🔐</div><h2>Welcome back</h2><p>Login to continue your application</p></div>
+            <form id="loginForm">
+                <div class="input-group"><label>Email or Username</label><input type="text" id="loginEmail" placeholder="e.g., student@mut.ac.za" required></div>
+                <div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••" required><span class="toggle-pw" onclick="togglePassword('loginPassword')">👁️</span></div>
+                <div class="flex-row"><label><input type="checkbox" id="rememberMe"> Remember me</label></div>
+                <button type="submit" class="auth-btn-primary">Login →</button>
+                <p id="loginMessage" class="auth-message"></p>
+            </form>
+            <div class="auth-footer"><p>Don't have an account? <a href="#" id="showSignupFromLoginBtn">Create account</a></p></div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content modal-auth">
+            <span class="close-modal close-signup">&times;</span>
+            <div class="auth-header"><div class="auth-icon">📝</div><h2>Create account</h2><p>Join MUT ICT and start your application</p></div>
+            <form id="signupForm">
+                <div class="input-group"><label>Full name</label><input type="text" id="signupFullName" placeholder="Thabo Mbeki" required></div>
+                <div class="input-group"><label>Username</label><input type="text" id="signupUsername" placeholder="thabo_mbeki" required></div>
+                <div class="input-group"><label>Email address</label><input type="email" id="signupEmail" placeholder="thabo@mut.ac.za" required></div>
+                <div class="input-group"><label>Password</label><input type="password" id="signupPassword" placeholder="Create a strong password" required><span class="toggle-pw" onclick="togglePassword('signupPassword')">👁️</span><div class="password-strength" id="passwordStrength"></div><ul class="password-requirements"><li id="req-length">🔒 At least 8 characters</li><li id="req-upper">🔒 One uppercase letter</li><li id="req-lower">🔒 One lowercase letter</li><li id="req-number">🔒 One number</li><li id="req-special">🔒 One special character (!@#$%^&*)</li></ul></div>
+                <div class="input-group"><label>Confirm password</label><input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required></div>
+                <div class="input-group"><label>I am a:</label><select id="signupRole"><option value="visitor">Prospective student</option><option value="student">Current student</option><option value="lecturer">Lecturer</option></select></div>
+                <button type="submit" class="auth-btn-primary">Create account →</button>
+                <p id="signupMessage" class="auth-message"></p>
+            </form>
+            <div class="auth-footer"><p>Already have an account? <a href="#" id="showLoginFromSignupBtn">Sign in</a></p></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            console.log('Programmes page loaded - Grouped sections layout');
+            
+            // ========== VALIDATION FUNCTIONS ==========
+            function validatePhoneNumber(phone) {
+                var phoneRegex = /^0[6-8][0-9]{8}$/;
+                return phoneRegex.test(phone);
+            }
+            function showPhoneError() {
+                var phone = document.getElementById('phone').value;
+                var errorDiv = document.getElementById('phoneError');
+                if (!phone) { errorDiv.innerHTML = ''; return false; }
+                if (!validatePhoneNumber(phone)) {
+                    errorDiv.innerHTML = '❌ Enter a valid SA number (e.g., 0821234567)';
+                    errorDiv.style.color = '#8B2C2C';
+                    return false;
+                }
+                errorDiv.innerHTML = '✅ Valid SA number';
+                errorDiv.style.color = '#4CAF50';
+                return true;
+            }
+            
+            function validateSAIDNumber(id) {
+                if (!id || id.length !== 13) return false;
+                if (!/^\d+$/.test(id)) return false;
+                var total = 0;
+                for (var i = 0; i < 12; i++) {
+                    var digit = parseInt(id[i]);
+                    if (i % 2 === 0) total += digit;
+                    else { var doubled = digit * 2; total += Math.floor(doubled / 10) + (doubled % 10); }
+                }
+                var checkDigit = (10 - (total % 10)) % 10;
+                return checkDigit === parseInt(id[12]);
+            }
+            function showIDError() {
+                var id = document.getElementById('idNumber').value;
+                var errorDiv = document.getElementById('idError');
+                if (!id) { errorDiv.innerHTML = ''; return false; }
+                if (!validateSAIDNumber(id)) {
+                    errorDiv.innerHTML = '❌ Invalid SA ID (13 digits required)';
+                    errorDiv.style.color = '#8B2C2C';
+                    return false;
+                }
+                errorDiv.innerHTML = '✅ Valid SA ID number';
+                errorDiv.style.color = '#4CAF50';
+                return true;
+            }
+            
+            function validateName(name) {
+                var nameRegex = /^[A-Za-z\s\-']+$/;
+                return nameRegex.test(name);
+            }
+            function showNameError(fieldId, errorId, fieldName) {
+                var value = document.getElementById(fieldId).value;
+                var errorDiv = document.getElementById(errorId);
+                if (!value) { errorDiv.innerHTML = ''; return false; }
+                if (!validateName(value)) {
+                    errorDiv.innerHTML = '❌ ' + fieldName + ' can only contain letters';
+                    errorDiv.style.color = '#8B2C2C';
+                    return false;
+                }
+                errorDiv.innerHTML = '✅ Valid ' + fieldName.toLowerCase();
+                errorDiv.style.color = '#4CAF50';
+                return true;
+            }
+            
+            function validateEmail(email) {
+                var emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+                return emailRegex.test(email);
+            }
+            function showEmailError() {
+                var email = document.getElementById('appEmail').value;
+                var errorDiv = document.getElementById('emailError');
+                if (!email) { errorDiv.innerHTML = ''; return false; }
+                if (!validateEmail(email)) {
+                    errorDiv.innerHTML = '❌ Enter a valid email address (e.g., name@domain.com)';
+                    errorDiv.style.color = '#8B2C2C';
+                    return false;
+                }
+                errorDiv.innerHTML = '✅ Valid email address';
+                errorDiv.style.color = '#4CAF50';
+                return true;
+            }
+            
+            function validateAge(dob) {
+                if (!dob) return false;
+                var birthDate = new Date(dob);
+                var today = new Date();
+                var age = today.getFullYear() - birthDate.getFullYear();
+                var monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--;
+                return age >= 16 && age <= 100;
+            }
+            function showAgeError() {
+                var dob = document.getElementById('dob').value;
+                var errorDiv = document.getElementById('dobError');
+                if (!dob) { errorDiv.innerHTML = ''; return false; }
+                if (!validateAge(dob)) {
+                    errorDiv.innerHTML = '❌ You must be 16 years or older';
+                    errorDiv.style.color = '#8B2C2C';
+                    return false;
+                }
+                var age = new Date().getFullYear() - new Date(dob).getFullYear();
+                errorDiv.innerHTML = '✅ Age: ' + age + ' years - Eligible';
+                errorDiv.style.color = '#4CAF50';
+                return true;
+            }
+            
+            function validateUsername(username) {
+                var usernameRegex = /^[A-Za-z0-9_]{3,20}$/;
+                return usernameRegex.test(username);
+            }
+            function validatePasswordStrength(password) {
+                var requirements = {
+                    length: password.length >= 8,
+                    upper: /[A-Z]/.test(password),
+                    lower: /[a-z]/.test(password),
+                    number: /[0-9]/.test(password),
+                    special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+                };
+                var allValid = requirements.length && requirements.upper && requirements.lower && requirements.number && requirements.special;
+                return { requirements: requirements, allValid: allValid };
+            }
+            
+            function updatePasswordUI() {
+                var pw = document.getElementById('signupPassword') ? document.getElementById('signupPassword').value : '';
+                var reqs = validatePasswordStrength(pw).requirements;
+                var reqIds = ['req-length', 'req-upper', 'req-lower', 'req-number', 'req-special'];
+                for (var i = 0; i < reqIds.length; i++) {
+                    var el = document.getElementById(reqIds[i]);
+                    if (el) el.style.color = '#475569';
+                }
+                if (reqs.length) document.getElementById('req-length').style.color = '#15803d';
+                if (reqs.upper) document.getElementById('req-upper').style.color = '#15803d';
+                if (reqs.lower) document.getElementById('req-lower').style.color = '#15803d';
+                if (reqs.number) document.getElementById('req-number').style.color = '#15803d';
+                if (reqs.special) document.getElementById('req-special').style.color = '#15803d';
+                
+                var score = (reqs.length?1:0)+(reqs.upper?1:0)+(reqs.lower?1:0)+(reqs.number?1:0)+(reqs.special?1:0);
+                var strengthText = score <= 2 ? 'Weak password' : (score <= 4 ? 'Medium password' : 'Strong password');
+                var strengthColor = score === 5 ? '#15803d' : '#D4A017';
+                var strengthDiv = document.getElementById('passwordStrength');
+                if (strengthDiv) strengthDiv.innerHTML = '<span style="color:' + strengthColor + '">🔐 ' + strengthText + '</span>';
+            }
+            
+            // Attach real-time validations
+            var phoneInput = document.getElementById('phone');
+            if (phoneInput) phoneInput.addEventListener('input', showPhoneError);
+            var idInput = document.getElementById('idNumber');
+            if (idInput) idInput.addEventListener('input', showIDError);
+            var emailInput = document.getElementById('appEmail');
+            if (emailInput) emailInput.addEventListener('input', showEmailError);
+            var dobInput = document.getElementById('dob');
+            if (dobInput) dobInput.addEventListener('change', showAgeError);
+            var fullNameInput = document.getElementById('fullName');
+            if (fullNameInput) fullNameInput.addEventListener('input', function() { showNameError('fullName', 'fullNameError', 'Full name'); });
+            var surnameInput = document.getElementById('surname');
+            if (surnameInput) surnameInput.addEventListener('input', function() { showNameError('surname', 'surnameError', 'Surname'); });
+            
+            var signupPass = document.getElementById('signupPassword');
+            if (signupPass) {
+                signupPass.addEventListener('input', updatePasswordUI);
+                signupPass.addEventListener('keyup', updatePasswordUI);
+            }
+            window.togglePassword = function(fieldId) {
+                var field = document.getElementById(fieldId);
+                if (field) field.type = field.type === 'password' ? 'text' : 'password';
+            };
+            
+            // Image upload
+            var uploadBtn = document.getElementById('uploadBtn');
+            var fileInput = document.getElementById('documentUpload');
+            var uploadStatus = document.getElementById('uploadStatus');
+            var fileUploadArea = document.getElementById('fileUploadArea');
+            var filePreview = document.getElementById('filePreview');
+            
+            if (uploadBtn && fileInput) {
+                uploadBtn.addEventListener('click', function() { fileInput.click(); });
+                fileInput.addEventListener('change', async function(e) {
+                    var file = e.target.files[0];
+                    if (!file) return;
+                    var allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+                    var isAllowed = false;
+                    for (var i = 0; i < allowedTypes.length; i++) {
+                        if (allowedTypes[i] === file.type) { isAllowed = true; break; }
+                    }
+                    if (!isAllowed) {
+                        uploadStatus.innerHTML = '❌ Please upload JPG, PNG, or PDF files only';
+                        uploadStatus.style.color = '#8B2C2C';
+                        return;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                        uploadStatus.innerHTML = '❌ File too large. Max 5MB';
+                        uploadStatus.style.color = '#8B2C2C';
+                        return;
+                    }
+                    uploadStatus.innerHTML = '⏳ Uploading...';
+                    uploadStatus.style.color = '#D4A017';
+                    var formData = new FormData();
+                    formData.append('document', file);
+                    var loggedIn = await checkLoginStatus();
+                    if (!loggedIn) {
+                        uploadStatus.innerHTML = '❌ Please login first';
+                        uploadStatus.style.color = '#8B2C2C';
+                        return;
+                    }
+                    try {
+                        var response = await fetch('/api/upload-document', { method: 'POST', body: formData });
+                        var data = await response.json();
+                        if (data.success) {
+                            uploadStatus.innerHTML = '✅ Uploaded: ' + data.fileName + ' (' + data.fileSize + ')';
+                            uploadStatus.style.color = '#4CAF50';
+                            var hiddenInput = document.getElementById('uploadedFileUrl');
+                            if (hiddenInput) hiddenInput.value = data.fileUrl;
+                            if (file.type.startsWith('image/')) {
+                                var reader = new FileReader();
+                                reader.onload = function(e) {
+                                    if (filePreview) filePreview.innerHTML = '<img src="' + e.target.result + '" alt="Preview" style="max-width: 100%; max-height: 150px; border-radius: 8px;">';
+                                };
+                                reader.readAsDataURL(file);
+                            } else if (file.type === 'application/pdf') {
+                                if (filePreview) filePreview.innerHTML = '<div class="pdf-preview">📄 PDF uploaded: ' + file.name + '</div>';
+                            }
+                        } else { uploadStatus.innerHTML = '❌ Upload failed'; uploadStatus.style.color = '#8B2C2C'; }
+                    } catch (error) { uploadStatus.innerHTML = '❌ Error uploading'; uploadStatus.style.color = '#8B2C2C'; }
+                });
+            }
+            if (fileUploadArea) {
+                fileUploadArea.addEventListener('dragover', function(e) { e.preventDefault(); fileUploadArea.style.borderColor = '#D4A017'; fileUploadArea.style.backgroundColor = '#FFF9F0'; });
+                fileUploadArea.addEventListener('dragleave', function(e) { e.preventDefault(); fileUploadArea.style.borderColor = '#E0E0E0'; fileUploadArea.style.backgroundColor = 'white'; });
+                fileUploadArea.addEventListener('drop', function(e) { e.preventDefault(); fileUploadArea.style.borderColor = '#E0E0E0'; fileUploadArea.style.backgroundColor = 'white'; var file = e.dataTransfer.files[0]; if (file && fileInput) { fileInput.files = e.dataTransfer.files; var event = new Event('change'); fileInput.dispatchEvent(event); } });
+            }
+            
+            // Authentication state
+            var isLoggedIn = false;
+            var pendingProgramme = null;
+            
+            async function checkLoginStatus() {
+                try {
+                    var res = await fetch('/api/current-user');
+                    var data = await res.json();
+                    var authButtons = document.getElementById('authButtons');
+                    var userMenu = document.getElementById('userMenu');
+                    var userNameShort = document.getElementById('userNameShort');
+                    if (data.loggedIn) {
+                        isLoggedIn = true;
+                        if (authButtons) authButtons.style.display = 'none';
+                        if (userMenu) userMenu.style.display = 'block';
+                        if (userNameShort) userNameShort.textContent = data.user.fullName ? data.user.fullName.split(' ')[0] : data.user.username;
+                        return true;
+                    } else {
+                        isLoggedIn = false;
+                        if (authButtons) authButtons.style.display = 'flex';
+                        if (userMenu) userMenu.style.display = 'none';
+                        return false;
+                    }
+                } catch (error) { return false; }
+            }
+            
+            function openApplicationForm(programmeName) {
+                var modal = document.getElementById('applyModal');
+                if (modal) {
+                    if (programmeName) {
+                        var progSelect = document.getElementById('programmeSelect');
+                        if (progSelect) {
+                            for (var i = 0; i < progSelect.options.length; i++) {
+                                if (progSelect.options[i].text && progSelect.options[i].text.includes(programmeName)) {
+                                    progSelect.value = progSelect.options[i].value;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    modal.style.display = 'flex';
+                }
+            }
+            
+            async function handleApplyClick(programmeName) {
+                pendingProgramme = programmeName;
+                var loggedIn = await checkLoginStatus();
+                if (!loggedIn) { document.getElementById('loginModal').style.display = 'flex'; }
+                else { openApplicationForm(programmeName); }
+            }
+            
+            // Attach apply buttons
+            var applyButtons = document.querySelectorAll('.apply-now-btn');
+            for (var i = 0; i < applyButtons.length; i++) {
+                var btn = applyButtons[i];
+                var programme = btn.getAttribute('data-programme');
+                var newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                newBtn.addEventListener('click', (function(prog) {
+                    return function(e) {
+                        e.preventDefault();
+                        handleApplyClick(prog);
+                    };
+                })(programme));
+            }
+            
+            // Tab switching
+            var tabBtns = document.querySelectorAll('.tab-btn');
+            for (var i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].addEventListener('click', function() {
+                    var clickedBtn = this;
+                    var tabId = clickedBtn.getAttribute('data-tab');
+                    for (var j = 0; j < tabBtns.length; j++) {
+                        tabBtns[j].classList.remove('active');
+                    }
+                    clickedBtn.classList.add('active');
+                    var allContents = document.querySelectorAll('.programme-tab-content');
+                    for (var k = 0; k < allContents.length; k++) {
+                        allContents[k].classList.remove('active');
+                    }
+                    var selectedContent = document.getElementById(tabId);
+                    if (selectedContent) selectedContent.classList.add('active');
+                });
+            }
+            
+            // Login form
+            var loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.onsubmit = async function(e) {
+                    e.preventDefault();
+                    var email = document.getElementById('loginEmail').value;
+                    var password = document.getElementById('loginPassword').value;
+                    var msgDiv = document.getElementById('loginMessage');
+                    if (!email) { msgDiv.innerHTML = '❌ Email or username required'; msgDiv.style.color = '#8B2C2C'; return; }
+                    if (!password) { msgDiv.innerHTML = '❌ Password required'; msgDiv.style.color = '#8B2C2C'; return; }
+                    msgDiv.innerHTML = '⏳ Logging in...';
+                    msgDiv.style.color = '#D4A017';
+                    try {
+                        var res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, password: password }) });
+                        var data = await res.json();
+                        if (data.success) {
+                            msgDiv.innerHTML = '✅ Login successful!';
+                            msgDiv.style.color = '#4CAF50';
+                            document.getElementById('loginModal').style.display = 'none';
+                            await checkLoginStatus();
+                            if (pendingProgramme) { openApplicationForm(pendingProgramme); pendingProgramme = null; }
+                            else { openApplicationForm(null); }
+                            loginForm.reset();
+                        } else { msgDiv.innerHTML = '❌ ' + data.message; msgDiv.style.color = '#8B2C2C'; }
+                    } catch (error) { msgDiv.innerHTML = '❌ Login failed'; msgDiv.style.color = '#8B2C2C'; }
+                };
+            }
+            
+            // Signup form
+            var signupForm = document.getElementById('signupForm');
+            if (signupForm) {
+                signupForm.onsubmit = async function(e) {
+                    e.preventDefault();
+                    var password = document.getElementById('signupPassword').value;
+                    var confirmPassword = document.getElementById('signupConfirmPassword').value;
+                    var username = document.getElementById('signupUsername').value;
+                    var email = document.getElementById('signupEmail').value;
+                    var fullName = document.getElementById('signupFullName').value;
+                    
+                    if (!validateUsername(username)) {
+                        document.getElementById('signupMessage').innerHTML = '❌ Username must be 3-20 letters, numbers, underscore only';
+                        return;
+                    }
+                    if (!validateEmail(email)) {
+                        document.getElementById('signupMessage').innerHTML = '❌ Enter a valid email address';
+                        return;
+                    }
+                    if (!validateName(fullName)) {
+                        document.getElementById('signupMessage').innerHTML = '❌ Name can only contain letters';
+                        return;
+                    }
+                    var isValid = validatePasswordStrength(password).allValid;
+                    if (!isValid) {
+                        document.getElementById('signupMessage').innerHTML = '❌ Password must have uppercase, lowercase, number, special character & be 8+ characters';
+                        return;
+                    }
+                    if (password !== confirmPassword) {
+                        document.getElementById('signupMessage').innerHTML = '❌ Passwords do not match';
+                        return;
+                    }
+                    var formData = { username: username, email: email, password: password, fullName: fullName, role: document.getElementById('signupRole').value };
+                    var msgDiv = document.getElementById('signupMessage');
+                    msgDiv.innerHTML = '⏳ Creating account...';
+                    msgDiv.style.color = '#D4A017';
+                    try {
+                        var res = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+                        var data = await res.json();
+                        if (data.success) {
+                            msgDiv.innerHTML = '✅ Account created! Please login.';
+                            msgDiv.style.color = '#4CAF50';
+                            document.getElementById('signupModal').style.display = 'none';
+                            document.getElementById('loginModal').style.display = 'flex';
+                            signupForm.reset();
+                        } else { msgDiv.innerHTML = '❌ ' + data.message; msgDiv.style.color = '#8B2C2C'; }
+                    } catch (error) { msgDiv.innerHTML = '❌ Signup failed'; }
+                };
+            }
+            
+            // Logout
+            var logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) logoutBtn.onclick = async function() { await fetch('/api/logout', { method: 'POST' }); window.location.reload(); };
+            
+            // Modal controls
+            document.getElementById('showLoginBtn').onclick = function() { document.getElementById('loginModal').style.display = 'flex'; };
+            document.getElementById('showSignupBtn').onclick = function() { document.getElementById('signupModal').style.display = 'flex'; };
+            document.getElementById('showSignupFromLoginBtn').onclick = function(e) { e.preventDefault(); document.getElementById('loginModal').style.display = 'none'; document.getElementById('signupModal').style.display = 'flex'; };
+            document.getElementById('showLoginFromSignupBtn').onclick = function(e) { e.preventDefault(); document.getElementById('signupModal').style.display = 'none'; document.getElementById('loginModal').style.display = 'flex'; };
+            
+            var closeButtons = document.querySelectorAll('.close-modal, .close-login, .close-signup');
+            for (var i = 0; i < closeButtons.length; i++) {
+                closeButtons[i].onclick = function() {
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('signupModal').style.display = 'none';
+                    document.getElementById('applyModal').style.display = 'none';
+                    pendingProgramme = null;
+                };
+            }
+            window.onclick = function(e) {
+                if (e.target === document.getElementById('loginModal')) document.getElementById('loginModal').style.display = 'none';
+                if (e.target === document.getElementById('signupModal')) document.getElementById('signupModal').style.display = 'none';
+                if (e.target === document.getElementById('applyModal')) document.getElementById('applyModal').style.display = 'none';
+            };
+            
+            // Form submission
+            var appForm = document.getElementById('applicationForm');
+            if (appForm) {
+                appForm.onsubmit = async function(e) {
+                    e.preventDefault();
+                    if (!isLoggedIn) {
+                        document.getElementById('appMessage').innerHTML = '❌ Please login first';
+                        document.getElementById('appMessage').style.color = '#8B2C2C';
+                        document.getElementById('applyModal').style.display = 'none';
+                        document.getElementById('loginModal').style.display = 'flex';
+                        return;
+                    }
+                    if (!document.getElementById('declarationCheckbox').checked || !document.getElementById('termsCheckbox').checked) {
+                        document.getElementById('appMessage').innerHTML = '❌ Please accept the declaration and terms';
+                        return;
+                    }
+                    var isValid = true;
+                    if (!showNameError('fullName', 'fullNameError', 'Full name')) isValid = false;
+                    if (!showNameError('surname', 'surnameError', 'Surname')) isValid = false;
+                    if (!showEmailError()) isValid = false;
+                    if (!showPhoneError()) isValid = false;
+                    if (!showIDError()) isValid = false;
+                    if (!showAgeError()) isValid = false;
+                    if (!isValid) {
+                        document.getElementById('appMessage').innerHTML = '❌ Please fix validation errors above';
+                        document.getElementById('appMessage').style.color = '#8B2C2C';
+                        return;
+                    }
+                    var studyMode = '';
+                    var radios = document.querySelectorAll('input[name="studyMode"]');
+                    for (var r = 0; r < radios.length; r++) { if (radios[r].checked) studyMode = radios[r].value; }
+                    var appData = {
+                        title: document.getElementById('title').value, full_name: document.getElementById('fullName').value,
+                        surname: document.getElementById('surname').value, date_of_birth: document.getElementById('dob').value,
+                        id_number: document.getElementById('idNumber').value, gender: document.getElementById('gender').value,
+                        email: document.getElementById('appEmail').value, phone: document.getElementById('phone').value,
+                        highest_qualification: document.getElementById('qualification').value, school_name: document.getElementById('school').value,
+                        programme_name: document.getElementById('programmeSelect').options[document.getElementById('programmeSelect').selectedIndex].text,
+                        study_mode: studyMode, uploadedFileUrl: document.getElementById('uploadedFileUrl').value
+                    };
+                    var submitBtn = document.getElementById('submitApplicationBtn');
+                    var msgDiv = document.getElementById('appMessage');
+                    submitBtn.innerHTML = '⏳ Submitting...';
+                    submitBtn.disabled = true;
+                    try {
+                        var response = await fetch('/api/save-application', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(appData) });
+                        var result = await response.json();
+                        if (result.success) {
+                            msgDiv.innerHTML = '✅ ' + result.message;
+                            msgDiv.style.color = '#4CAF50';
+                            appForm.reset();
+                            if (filePreview) filePreview.innerHTML = '';
+                            if (uploadStatus) uploadStatus.innerHTML = '';
+                            setTimeout(function() { document.getElementById('applyModal').style.display = 'none'; msgDiv.innerHTML = ''; }, 2000);
+                        } else { throw new Error(result.message); }
+                    } catch (error) { msgDiv.innerHTML = '❌ ' + error.message; msgDiv.style.color = '#8B2C2C'; }
+                    finally { submitBtn.innerHTML = '✓ Submit Application'; submitBtn.disabled = false; }
+                };
+            }
+            
+            // Dashboard
+            function loadDashboard(role) {
+                fetch('/api/user?role=' + role).then(function(res) { return res.json(); }).then(function(data) {
+                    document.getElementById('dashboardTitle').innerText = data.title;
+                    document.getElementById('dashboardGreeting').innerText = data.greeting;
+                }).catch(function(e) { console.error(e); });
+            }
+            var vBtn = document.getElementById('visitorBtn');
+            var sBtn = document.getElementById('studentBtn');
+            var lBtn = document.getElementById('lecturerBtn');
+            if (vBtn) vBtn.onclick = function() { loadDashboard('visitor'); };
+            if (sBtn) sBtn.onclick = function() { loadDashboard('student'); };
+            if (lBtn) lBtn.onclick = function() { loadDashboard('lecturer'); };
+            loadDashboard('visitor');
+            
+            checkLoginStatus();
+            console.log('✅ Programmes page loaded - Grouped sections form with full validations');
+        })();
+    </script>
+</body>
+</html>
